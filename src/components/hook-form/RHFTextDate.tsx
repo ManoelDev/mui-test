@@ -49,7 +49,7 @@ export default function RHFTextDate({
           showToolbar={showToolbar}
           showTodayButton={showTodayButton}
           showDaysOutsideCurrentMonth={showDaysOutsideCurrentMonth}
-          InputAdornmentProps={{}}
+          // InputAdornmentProps={{}}
           // components={{
           //   OpenPickerIcon: MoreTimeIcon,
           //   LeftArrowIcon: MoreTimeIcon,
