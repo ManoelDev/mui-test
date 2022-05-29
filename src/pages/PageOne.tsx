@@ -1,0 +1,148 @@
+import * as Yup from 'yup';
+import React, { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+// form
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+
+// hooks
+import useIsMountedRef from '../hooks/useIsMountedRef';
+// components
+import Iconify from '../components/Iconify';
+import { FormProvider, RHFTextField, RHFCheckbox, RHFTextDate } from '../components/hook-form';
+// @mui
+import { LoadingButton } from '@mui/lab';
+import { Container, Typography, Link, Stack, Card, Alert, IconButton, InputAdornment } from '@mui/material';
+// hooks
+import useSettings from '../hooks/useSettings';
+// components
+import Page from '../components/Page';
+
+// ----------------------------------------------------------------------
+
+
+type FormValuesProps = {
+  email: string;
+  password: string;
+  remember: boolean;
+  afterSubmit?: string;
+};
+
+export default function PageOne() {
+  const { themeStretch } = useSettings();
+
+
+  const isMountedRef = useIsMountedRef();
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string().email('Email must be a valid email address').required('Email is required'),
+    password: Yup.string().required('Password is required'),
+  });
+
+  const defaultValues = {
+    email: 'demo@minimals.cc',
+    birthDate: 'demo@minimals.cc',
+    password: 'demo1234',
+    remember: true,
+  };
+
+  const methods = useForm<FormValuesProps>({
+    resolver: yupResolver(LoginSchema),
+    defaultValues,
+  });
+
+  const {
+    reset,
+    setError,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = methods;
+
+  const onSubmit = async (data: FormValuesProps) => {
+    try {
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+
+      reset();
+
+      if (isMountedRef.current) {
+        setError('afterSubmit', { ...error, message: error.message });
+      }
+    }
+  };
+
+  return (
+    <Page title="Page One">
+      <Container maxWidth={themeStretch ? false : 'xl'}>
+        <Typography variant="h3" component="h1" paragraph>
+          Page One
+        </Typography>
+        <Typography gutterBottom>
+          Curabitur turpis. Vestibulum facilisis, purus nec pulvinar iaculis, ligula mi congue nunc,
+          vitae euismod ligula urna in dolor. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit
+          id, lorem. Phasellus blandit leo ut odio. Vestibulum ante ipsum primis in faucibus orci
+          luctus et ultrices posuere cubilia Curae; Fusce id purus. Aliquam lorem ante, dapibus in,
+          viverra quis, feugiat a, tellus. In consectetuer turpis ut velit. Aenean posuere, tortor
+          sed cursus feugiat, nunc augue blandit nunc, eu sollicitudin urna dolor sagittis lacus.
+          Vestibulum suscipit nulla quis orci. Nam commodo suscipit quam. Sed a libero.
+        </Typography>
+
+        <Card sx={{
+          p: 3,
+        }}>
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={3}>
+              {!!errors.afterSubmit && <Alert severity="error">{errors.afterSubmit.message}</Alert>}
+
+              <RHFTextDate
+                name="birthDate"
+                size="medium"
+                label="Data de nascimento"
+                showTodayButton
+              />
+
+              <RHFTextField name="email" />
+              <RHFTextField name="email" label="Email address" />
+
+              <RHFTextField
+                name="password"
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                        <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
+            </Stack>
+
+            <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+              <RHFCheckbox name="remember" label="Remember me" />
+              <Link component={RouterLink} variant="subtitle2" to={'/'}>
+                Forgot password?
+              </Link>
+            </Stack>
+
+            <LoadingButton
+              fullWidth
+              size="large"
+              type="submit"
+              variant="contained"
+              loading={isSubmitting}
+            >
+              Login
+            </LoadingButton>
+          </FormProvider>
+        </Card>
+
+      </Container>
+    </Page >
+  );
+}
