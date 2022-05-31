@@ -45,8 +45,10 @@ import { CollapseDrawerProvider } from './contexts/CollapseDrawerContext';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import React from 'react';
 
 // ----------------------------------------------------------------------
+
 
 ReactDOM.render(
   <HelmetProvider>
@@ -55,7 +57,9 @@ ReactDOM.render(
       <SettingsProvider>
         <CollapseDrawerProvider>
           <BrowserRouter>
-            <App />
+            <React.StrictMode>
+              <App />
+            </React.StrictMode>
           </BrowserRouter>
         </CollapseDrawerProvider>
       </SettingsProvider>
