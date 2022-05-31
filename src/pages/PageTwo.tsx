@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Stack, OutlinedInput, FormHelperText, Card } from '@mui/material';
+import { Stack, OutlinedInput, FormHelperText, Card, Typography, Link } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import { FormProvider } from '../components/hook-form';
@@ -133,8 +133,14 @@ export default function VerifyCodeForm() {
     }}>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
         <Stack spacing={3}>
-          <Stack spacing={3}>
-            Ola
+          <Stack >
+            <Typography variant="h5">Confirmação</Typography>
+            <Typography variant="body2" sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }} >Confirmação:
+              <Typography variant="body1"> 0</Typography>
+            </Typography>
           </Stack>
           <Stack direction="row" spacing={2} justifyContent="center">
             {Object.keys(values).map((name, index) => (
@@ -158,7 +164,7 @@ export default function VerifyCodeForm() {
                         p: 0,
                         textAlign: 'center',
                         width: { xs: 54, sm: 54 },
-                        height: { xs: 56, sm: 56 },
+                        height: { xs: 54, sm: 56 },
                       },
                     }}
                   />
@@ -167,7 +173,23 @@ export default function VerifyCodeForm() {
             ))}
           </Stack>
 
-          {(
+          <Stack
+
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexDirection: 'row',
+            }}
+          >
+            Não recebeu? <Link href="#" variant="body2"
+              sx={{
+                marginLeft: 1,
+              }}
+            >Reenviar código</Link>
+          </Stack>
+
+          {/* {(
             !!errors.code1 ||
             !!errors.code2 ||
             !!errors.code3 ||
@@ -177,7 +199,7 @@ export default function VerifyCodeForm() {
               <FormHelperText error sx={{ px: 2, textAlign: 'center' }}>
                 Informe o código de verificação.
               </FormHelperText>
-            )}
+            )} */}
 
           <LoadingButton
             fullWidth
@@ -187,7 +209,7 @@ export default function VerifyCodeForm() {
             loading={isSubmitting}
             sx={{ mt: 3 }}
           >
-            Validar
+            Continuar
           </LoadingButton>
         </Stack>
       </FormProvider>
