@@ -6,10 +6,14 @@ import { useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
-import { Stack, OutlinedInput, FormHelperText, Card, Typography, Link } from '@mui/material';
+import { Stack, OutlinedInput, FormHelperText, Card, Typography, Link, Container } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import { FormProvider } from '../components/hook-form';
+
+// components
+import Page from '../components/Page';
+import useSettings from 'src/hooks/useSettings';
 // routes
 const PATH_DASHBOARD = '/dashboard'
 
@@ -26,6 +30,7 @@ type FormValuesProps = {
 type ValueNames = 'code1' | 'code2' | 'code3' | 'code4' | 'code5';
 
 export default function VerifyCodeForm() {
+  const { themeStretch } = useSettings();
   const navigate = useNavigate();
 
   const { enqueueSnackbar } = useSnackbar();
@@ -128,68 +133,73 @@ export default function VerifyCodeForm() {
   };
 
   return (
-    <Card sx={{
-      padding: 3,
-    }}>
-      <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-        <Stack spacing={3}>
-          <Stack >
-            <Typography variant="h5">Confirmação</Typography>
-            <Typography variant="body2" sx={{
-              display: 'flex',
-              alignItems: 'center',
-            }} >Confirmação:
-              <Typography variant="body1"> 0</Typography>
-            </Typography>
-          </Stack>
-          <Stack direction="row" spacing={2} justifyContent="center">
-            {Object.keys(values).map((name, index) => (
-              <Controller
-                key={name}
-                name={`code${index + 1}` as ValueNames}
-                control={control}
-                render={({ field, fieldState: { error } }) => (
-                  <OutlinedInput
-                    {...field}
-                    error={!!error}
-                    autoFocus={index === 0}
+    <Page title="Page Two">
+      <Container maxWidth={themeStretch ? false : 'xl'}>
+        <Typography variant="h3" component="h1" paragraph>
+          Page Two
+        </Typography>
+        <Card sx={{
+          padding: 3,
+        }}>
+          <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={3}>
+              <Stack >
+                <Typography variant="h5">Confirmação</Typography>
+                <Typography variant="body2" sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }} >Confirmação:
+                  <Typography variant="body1"> 0</Typography>
+                </Typography>
+              </Stack>
+              <Stack direction="row" spacing={2} justifyContent="center">
+                {Object.keys(values).map((name, index) => (
+                  <Controller
+                    key={name}
+                    name={`code${index + 1}` as ValueNames}
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <OutlinedInput
+                        {...field}
+                        error={!!error}
+                        autoFocus={index === 0}
 
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-                      handleChangeWithNextField(event, field.onChange)
-                    }
-                    inputProps={{
-                      className: 'field-code',
-                      maxLength: 1,
-                      sx: {
-                        p: 0,
-                        textAlign: 'center',
-                        width: { xs: 54, sm: 54 },
-                        height: { xs: 54, sm: 56 },
-                      },
-                    }}
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          handleChangeWithNextField(event, field.onChange)
+                        }
+                        inputProps={{
+                          className: 'field-code',
+                          maxLength: 1,
+                          sx: {
+                            p: 0,
+                            textAlign: 'center',
+                            width: { xs: 54, sm: 54 },
+                            height: { xs: 54, sm: 56 },
+                          },
+                        }}
+                      />
+                    )}
                   />
-                )}
-              />
-            ))}
-          </Stack>
+                ))}
+              </Stack>
 
-          <Stack
+              <Stack
 
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              flexDirection: 'row',
-            }}
-          >
-            Não recebeu? <Link href="#" variant="body2"
-              sx={{
-                marginLeft: 1,
-              }}
-            >Reenviar código</Link>
-          </Stack>
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  flexDirection: 'row',
+                }}
+              >
+                Não recebeu? <Link href="#" variant="body2"
+                  sx={{
+                    marginLeft: 1,
+                  }}
+                >Reenviar código</Link>
+              </Stack>
 
-          {/* {(
+              {/* {(
             !!errors.code1 ||
             !!errors.code2 ||
             !!errors.code3 ||
@@ -201,18 +211,21 @@ export default function VerifyCodeForm() {
               </FormHelperText>
             )} */}
 
-          <LoadingButton
-            fullWidth
-            size="small"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-            sx={{ mt: 3 }}
-          >
-            Continuar
-          </LoadingButton>
-        </Stack>
-      </FormProvider>
-    </Card>
+              <LoadingButton
+                fullWidth
+                size="small"
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+                sx={{ mt: 3 }}
+              >
+                Continuar
+              </LoadingButton>
+            </Stack>
+          </FormProvider>
+        </Card>
+
+      </Container>
+    </Page >
   );
 }
