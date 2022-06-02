@@ -49,7 +49,6 @@ export default function VerifyCodeForm() {
     code3: '',
     code4: '',
     code5: '',
-
   };
 
   const methods = useForm({
@@ -82,17 +81,12 @@ export default function VerifyCodeForm() {
 
   const handlePaste = (event: any) => {
     let data = event.clipboardData.getData('text');
-
     data = data.split('');
-
     [].forEach.call(document.querySelectorAll('.field-code'), (node: any, index) => {
       node.value = data[index];
-
       const fieldIndex = `code${index + 1}`;
-
       setValue(fieldIndex as ValueNames, data[index]);
     });
-
     event.preventDefault();
   };
 
@@ -107,7 +101,7 @@ export default function VerifyCodeForm() {
     const fieldIntIndex = Number(fieldIndex);
 
     if (value.length >= maxLength) {
-      if (fieldIntIndex < 6) {
+      if (fieldIntIndex < 5) {
         const nextfield = document.querySelector(`input[name=code${fieldIntIndex + 1}]`);
 
         if (nextfield !== null) {
@@ -149,7 +143,7 @@ export default function VerifyCodeForm() {
                   display: 'flex',
                   alignItems: 'center',
                 }} >Confirmação:
-                  <Typography variant="body1"> 0</Typography>
+                  <Typography variant="body1"> 00:00</Typography>
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={2} justifyContent="center">
